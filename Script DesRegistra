@@ -1,0 +1,425 @@
+REM Script para Des/registrar o Script Engine 
+REM Autor: Gabriel Gomes
+
+Echo off
+Cls
+Cls
+Date /t
+Echo.Versao 09.06.3.2020
+Echo Computador: %computername%
+echo.
+echo.
+REM -----------------------------------------------------------------------
+
+goto permission
+
+:permission
+openfiles>nul 2>&1
+ 
+if %errorlevel% EQU 0 goto processador
+ 
+call :print Verique se executou o programa como Administrador.
+COLOR 4F
+cls
+echo.
+echo.
+echo.
+echo.
+echo.******************************************************************************
+echo.
+echo.                   Voce nao executou como Administrador.
+echo.
+echo.                 Essa ferramenta nao vai ser efetiva sem isso.
+echo.
+echo.        Clique com o botao direito e selecione Executar como Administrador.
+echo.
+echo.*****************************************************************************
+echo.
+echo.
+echo.
+pause 
+goto :menu
+REM --------------------------------------------------------------------------------------------
+
+:processador
+
+IF %PROCESSOR_ARCHITECTURE% == x86 (goto cpu86
+) ELSE ( 
+    goto cpu64
+ )
+
+:cpu86
+
+IF EXIST C:\SCE\AutoMagazine\Network\4.1\Support ( goto menuserv86
+ ) ELSE ( 
+    goto menuest86
+ )
+
+:cpu64
+
+IF EXIST C:\SCE\AutoMagazine\Network\4.1\Support ( goto menuserv64
+ ) ELSE ( 
+    goto menuest64
+ )
+REM ------------------------------menu servidor-----------------------------------------------
+
+:menuserv86
+COLOR CF
+Echo          MENU DE TAREFAS Win32
+Echo.***************SERVIDOR**************
+Echo  ====================================
+Echo  * 1. DESREGISTRAR SCRIPT ENGINE    * 
+Echo  * 2. REGISTRAR  SCRIPT ENGINE      *
+Echo  * 3. Sair                          * 
+Echo  ====================================
+
+
+Set /p opcao= Escolha uma opcao: 
+Echo ------------------------------
+If %opcao% equ 1 goto desserv86
+If %opcao% equ 2 goto reserv86
+If %opcao% equ 3 goto sair
+If %opcao% equ 4 goto inv
+
+:menuserv64
+COLOR CF
+Echo         MENU DE TAREFAS Win64
+Echo.***************SERVIDOR**************
+Echo  ====================================
+Echo  * 1. DESREGISTRAR SCRIPT ENGINE    * 
+Echo  * 2. REGISTRAR  SCRIPT ENGINE      *
+Echo  * 3. Sair                          * 
+Echo  ====================================
+
+
+Set /p opcao= Escolha uma opcao: 
+Echo ------------------------------
+If %opcao% equ 1 goto desserv64
+If %opcao% equ 2 goto reserv64
+If %opcao% equ 3 goto sair
+If %opcao% equ 4 goto inv
+
+REM ------------------------------------menu estação---------------------------------------
+
+:menuest86
+COLOR B0
+Echo         MENU DE TAREFAS Win32
+Echo.***************ESTACAO***************
+Echo  ====================================
+Echo  * 1. DESREGISTRAR SCRIPT ENGINE    * 
+Echo  * 2. REGISTRAR  SCRIPT ENGINE      *
+Echo  * 3. Sair                          * 
+Echo  ====================================
+
+
+Set /p opcao= Escolha uma opcao: 
+Echo ------------------------------
+If %opcao% equ 1 goto desest86
+If %opcao% equ 2 goto reest86
+If %opcao% equ 3 goto sair
+If %opcao% equ 4 goto inv
+
+:menuest64
+COLOR B0
+Echo           MENU DE TAREFAS WIN64
+Echo.****************ESTACAO**************
+Echo  ====================================
+Echo  * 1. DESREGISTRAR SCRIPT ENGINE    * 
+Echo  * 2. REGISTRAR  SCRIPT ENGINE      *
+Echo  * 3. Sair                          * 
+Echo  ====================================
+
+
+Set /p opcao= Escolha uma opcao: 
+Echo ------------------------------
+If %opcao% equ 1 goto desest64
+If %opcao% equ 2 goto reest64
+If %opcao% equ 3 goto sair
+If %opcao% equ 4 goto inv
+
+REM --------------------------açõesservidor----------------------------------------------------------
+
+:desserv86
+COLOR 1F
+Cls
+Echo ===================================================
+Echo * DESREGISTRANDO SCRIPT ENGINE -> WINDOWS 32BITS  *
+Echo ===================================================
+CD C:\
+CD C:\Windows\System32
+
+regsvr32 C:\Windows\System32\SCEScriptEngine.dll /u
+
+cls
+Echo SCRIPT ENGINE DESREGISTRADA
+echo.
+echo.
+ECHO.
+Pause
+cls
+Goto menuserv86
+
+
+:reserv86
+COLOR 5F
+Cls
+Echo =================================================
+Echo * REGISTRANDO SCRIPT ENGINE -> WINDOWS 32BITS   *
+Echo =================================================
+ECHO.
+ECHO SUBSTITUINDO DLL ORIGINAL PELA NOVA
+XCOPY /C /G /Y C:\SCE\AutoMagazine\Network\4.1\Support\SCEScriptEngine.dll  C:\Windows\System32
+CLS
+echo.
+ECHO.
+echo REGISTRANDO DLL
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL.
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL..
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL...
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL.
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL..
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL...
+ping localhost -n .15 >nul
+cls
+CD C:\
+CD C:\Windows\System32
+
+regsvr32 C:\Windows\System32\SCEScriptEngine.dll 
+cls
+Echo SCRIPT ENGINE REGISTRADA
+ECHO.Pode usar o sistema agora...
+echo.
+echo.
+Pause
+EXIT
+
+:desserv64
+COLOR 1F
+Cls
+Echo ===================================================
+Echo * DESREGISTRANDO SCRIPT ENGINE -> WINDOWS 64BITS  *
+Echo ===================================================
+CD C:\
+CD C:\Windows\System32
+
+regsvr32 C:\Windows\SysWOW64\SCEScriptEngine.dll /u
+cls
+Echo SCRIPT ENGINE DESREGISTRADA
+ECHO.
+Pause
+cls
+Goto menuserv64
+
+:reserv64
+COLOR 5F
+Cls
+Echo =================================================
+Echo * REGISTRANDO SCRIPT ENGINE -> WINDOWS 64BITS   *
+Echo =================================================
+ECHO.
+ECHO SUBSTITUINDO DLL ORIGINAL PELA NOVA
+XCOPY /C /G /Y C:\SCE\AutoMagazine\Network\4.1\Support\SCEScriptEngine.dll  C:\Windows\System32
+CLS
+echo.
+ECHO.
+echo REGISTRANDO DLL
+ping localhost -n .205 >nul
+cls
+echo REGISTRANDO DLL.
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL..
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL...
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL.
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL..
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL...
+ping localhost -n .15 >nul
+cls
+CD C:\
+CD C:\Windows\System32
+
+regsvr32 C:\Windows\SysWOW64\SCEScriptEngine.dll
+cls
+Echo SCRIPT ENGINE REGISTRADA
+ECHO.Pode usar o sistema agora...
+echo.
+echo.
+Pause
+EXIT
+
+rem ---------------------------------------açõesdaestação----------------------------------------------------------------------------------------------
+:desest86
+COLOR 9F
+Cls
+Echo ===================================================
+Echo * DESREGISTRANDO SCRIPT ENGINE -> WINDOWS 32BITS  *
+Echo ===================================================
+CD C:\
+CD C:\Windows\System32
+
+regsvr32 C:\Windows\System32\SCEScriptEngine.dll /u
+
+cls
+Echo SCRIPT ENGINE DESREGISTRADA
+ECHO.
+Pause
+cls
+COLOR 4F
+ECHO                          ** IMPORTANTE ** 
+echo.    COPIE A DLL DO SERVIDOR PARA A PASTA C:\SCE\  DA ESTACAO
+Pause
+cls
+Goto menuest86
+
+:reest86
+COLOR A0
+Cls
+Echo =================================================
+Echo * REGISTRANDO SCRIPT ENGINE -> WINDOWS 32BITS   *
+Echo =================================================
+ECHO.
+ECHO SUBSTITUINDO DLL ORIGINAL PELA NOVA
+XCOPY /C /G /Y C:\SCE\SCEScriptEngine.dll  C:\Windows\System32
+CLS
+echo.
+ECHO.
+echo REGISTRANDO DLL
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL.
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL..
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL...
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL.
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL..
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL...
+ping localhost -n .15 >nul
+cls
+CD C:\
+CD C:\Windows\System32
+
+regsvr32 C:\Windows\System32\SCEScriptEngine.dll
+cls
+Echo SCRIPT ENGINE REGISTRADA
+ECHO.Pode usar o sistema agora...
+echo.
+echo.
+Pause
+EXIT
+
+
+:desest64
+COLOR 9F
+Cls
+Echo ===================================================
+Echo * DESREGISTRANDO SCRIPT ENGINE -> WINDOWS 64BITS  *
+Echo ===================================================
+CD C:\
+CD C:\Windows\System32\
+
+regsvr32 C:\Windows\SysWOW64\SCEScriptEngine.dll /u
+cls
+Echo SCRIPT ENGINE DESREGISTRADA
+ECHO.
+Pause
+cls
+COLOR 4F
+ECHO                          ** IMPORTANTE ** 
+echo.    COPIE A DLL DO SERVIDOR PARA A PASTA C:\SCE\  DA ESTACAO
+Pause
+cls
+Goto menuest64
+
+:reest64
+COLOR A0
+Cls
+Echo =================================================
+Echo *  REGISTRANDO SCRIPT ENGINE -> WINDOWS 64BITS   *
+Echo =================================================
+ECHO.
+ECHO SUBSTITUINDO DLL ORIGINAL PELA NOVA
+XCOPY /C /G /Y C:\SCE\SCEScriptEngine.dll  C:\Windows\SysWOW64
+CLS
+echo.
+ECHO.
+echo REGISTRANDO DLL
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL.
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL..
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL...
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL.
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL..
+ping localhost -n .15 >nul
+cls
+echo REGISTRANDO DLL...
+ping localhost -n .15 >nul
+cls
+CD C:\
+CD C:\Windows\SysWOW64
+
+regsvr32 C:\Windows\SysWOW64\SCEScriptEngine.dll
+cls
+Echo SCRIPT ENGINE REGISTRADA
+ECHO.Pode usar o sistema agora...
+echo.
+echo.
+Pause
+EXIT
+
+
+:sair
+Cls
+Exit
+
+
+:inv
+Echo ==============================================
+Echo * Opcao Invalida! Escolha outra opcao do menu *
+Echo ==============================================
+Pause
+Goto menu
+
+REM C:\Windows\system32>regsvr32 C:\Windows\SysWOW64\SCEScriptEngine.dll /u
+REM C:\Windows\SysWOW64
+REM 
+
+
+
